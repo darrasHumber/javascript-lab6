@@ -1,1 +1,1 @@
-# javascript-lab6
+# JavaScript Lab 6
