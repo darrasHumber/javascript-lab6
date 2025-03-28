@@ -43,51 +43,44 @@ function fetchComments(postId) {
 
 //Sequantial Fetching!
 function fetchSequentially() {
-  console.log("Sequantial Fetching using promise!");
   fetchUserProfile()
     .then((user) => {
-      console.log("User profile retrieved:", user);
+      console.log("User profile retrieved(Sequantial):", user);
       return fetchPosts(user.id);
     })
     .then((posts) => {
-      console.log("Posts retrieved:", posts);
+      console.log("Posts retrieved(Sequantial):", posts);
       return fetchComments(posts[0].id);
     })
     .then((comments) => {
-      console.log("Comments retrieved:", comments);
+      console.log("Comments retrieved(Sequantial):", comments);
     })
     .catch((error) => {
-      console.error("Error in sequential fetch:", error);
+      console.error("Error in sequential fetch(Sequantial):", error);
     });
 }
 
-fetchSequentially();
+//fetchSequentially();
 
 //Parallel Fetching
 function fetchInParallel() {
-  console.log("\nParallel Fetching data using Promise");
   Promise.all([fetchUserProfile(), fetchPosts(1), fetchComments(101)])
     .then(([user, posts, comments]) => {
-      console.log("User profile retrieved:", user);
-      console.log("Posts retrieved:", posts);
-      console.log("Comments retrieved:", comments);
+      console.log("\nUser profile retrieved(Parallel):", user);
+      console.log("Posts retrieved(Parallel):", posts);
+      console.log("Comments retrieved(Parallel):", comments, "\n\n");
     })
     .catch((error) => {
-      console.error("Error in parallel fetch:", error);
+      console.error("Error in parallel fetch(Parallel):", error);
     });
 }
 
-//fetchInParallel();
-//4 seconds delay to show results separatly!
-
-setTimeout(
-  () =>
-    console.log(
-      "\nAfter  4 seconds dealay we will test fetch in parallel of promises"
-    ),
-  4000
+console.log(
+  "We will fetch data using sequantial and parallel techniques and compare results, some error will be randomly generated!"
 );
-setTimeout(fetchInParallel, 4000);
+
+setTimeout(fetchSequentially, 1000);
+setTimeout(fetchInParallel, 1000);
 
 // Refactor with Async/Await:
 
@@ -109,7 +102,7 @@ async function fetchPostsAsync(userId) {
         { id: 102, title: "Python has async and await too", userId },
       ];
       resolve(posts);
-    }, 1500);
+    }, 2000);
   });
 }
 
@@ -131,63 +124,38 @@ async function fetchCommentsAsync(postId) {
 
 // Sequential fetching using async/await
 async function fetchSequentiallyAsync() {
-  console.log("\nSequential fetching using async/await");
   try {
     const user = await fetchUserProfileAsync();
-    console.log("User profile retrieved:", user);
+    console.log("User profile retrieved(Sequantial/Async):", user);
 
     const posts = await fetchPostsAsync(user.id);
-    console.log("Posts retrieved:", posts);
+    console.log("Posts retrieved(Sequantial/Async):", posts);
 
     const comments = await fetchCommentsAsync(posts[0].id);
-    console.log("Comments retrieved:", comments);
+    console.log("Comments retrieved(Sequantial/Async):", comments);
   } catch (error) {
-    console.error("Error in sequential fetch:", error);
+    console.error("Error in sequential fetch(Sequantial/Async):", error);
   }
 }
 
-//fetchSequentiallyAsync();
-//8 seconds delay to show results separatly!
-
-setTimeout(
-  () =>
-    console.log(
-      "\nAfter  8 seconds dealay we will test fetch sequentially async"
-    ),
-  8000
-);
-setTimeout(fetchSequentiallyAsync, 8000);
-
 // Parallel fetching using async/await
 async function fetchInParallelAsync() {
-  console.log("\nParallel fetching using async/await");
   try {
     const [user, posts, comments] = await Promise.all([
       fetchUserProfileAsync(),
       fetchPostsAsync(1),
       fetchCommentsAsync(101),
     ]);
-    console.log("User profile retrieved:", user);
-    console.log("Posts retrieved:", posts);
-    console.log("Comments retrieved:", comments);
+    console.log("\nUser profile retrieved(Parallel/Async):", user);
+    console.log("Posts retrieved(Parallel/Async):", posts);
+    console.log("Comments retrieved(Parallel/Async):", comments, "\n\n");
   } catch (error) {
-    console.error("Error in parallel fetch:", error);
+    console.error("Error in parallel fetch(Parallel/Async):", error);
   }
 }
 
-//fetchInParallelAsync();
-//12 seconds delay to show results separatly!
-setTimeout(
-  () =>
-    console.log(
-      "\nAfter  12 seconds dealay we will test fetch in parallel of async"
-    ),
-  12000
-);
-setTimeout(fetchInParallelAsync, 12000);
-
-//Error Handling Simulation
-// Updated fetchComment and fetchCommentAsync with radom rejection with prob .1
+setTimeout(fetchSequentiallyAsync, 1000);
+setTimeout(fetchInParallelAsync, 1000);
 
 async function fetchDataWithErrorHandling() {
   console.log("\nFetch Data with error Handeling");
@@ -204,17 +172,8 @@ async function fetchDataWithErrorHandling() {
     console.error("Error fetching data:", error);
   }
 }
-//fetchDataWithErrorHandling();
-//16 seconds delay then apply function
-setTimeout(
-  () =>
-    console.log(
-      "\nAfter  16 seconds dealay we will test fetch with error handeling"
-    ),
-  16000
-);
-setTimeout(fetchDataWithErrorHandling, 16000);
 
+setTimeout(fetchDataWithErrorHandling, 6000);
 //Chaining Async Functions:
 
 async function getUserContent() {
@@ -239,10 +198,5 @@ async function getUserContent() {
   }
 }
 
-//getUserContent();
-//Delay 20 second then call function
-setTimeout(
-  () => console.log("\nAfter  20 seconds dealay we will test getUserAccount"),
-  20000
-);
-setTimeout(getUserContent, 20000);
+setTimeout(getUserContent, 11000);
+setTimeout(() => console.log("\nAll completed, Thank you"), 18000);
